@@ -16,7 +16,7 @@ variable           sdpd_c equal 3e-1
 variable           sdpd_eta equal 1.5e-2
 variable           sdpd_mu  equal ${sdpd_eta}/${sdpd_rho} 
 variable          h equal 2.7*${dx}
-variable          gx equal 6.12
+variable          gx equal 60.12
 variable          Nfreq equal 10000
 variable          r0       equal 1.4*${dx}
 variable          H        equal 5.3e-4
@@ -32,7 +32,7 @@ bond_coeff 1 ${H} ${r0}  0 0
 
 mass               1 ${sdpd_mass}
 set                group all meso/rho ${sdpd_rho}
-variable           sdpd_temp index 1e9
+variable           sdpd_temp index 10.0
 pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_eta} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 
@@ -41,9 +41,6 @@ fix                integrate_fix_full all meso
 
 variable bodyfx atom mass*${gx}*((y>${Ly}/2.0)-(y<${Ly}/2.0))
 fix reverce_periodic all addforce v_bodyfx 0.0 0.0           
-
-# "profile" corrected temperature
-#compute         pTemp all temp/profile 1 1 0 y 5
 
 dump               dump_id all custom 10000 dump*.dat id type x y z vx vy vz
 dump_modify        dump_id first yes
@@ -56,7 +53,8 @@ variable atomradius  equal ${dx}*0.25
 dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} adiam 1e-5 view 60 60 zoom 2.8 box yes 0.01
 dump_modify        imgDump pad 9
 
-neighbor           3.0e-6 bin
+variable           skin equal 0.1*$h
+neighbor           ${skin} bin
 include            settimestep.lmp
 timestep           ${dt}
 
