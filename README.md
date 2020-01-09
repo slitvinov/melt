@@ -2,7 +2,7 @@ git clone https://github.com/lammps/lammps
 
 cd lammps/src
 make yes-USER-SDPD yes-MOLECULE
-make serial CC=mpic++ LINK=mpic++ CCFLAGS='-Ofast -g' FFT_LIB= MPI_LIB=
+make serial CCFLAGS='-Ofast -g' FFT_LIB=
 (cd ../tools/eff && make restart2data-pEFF)
 
 mkdir -p $HOME/bin/
