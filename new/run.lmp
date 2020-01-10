@@ -8,19 +8,19 @@ comm_modify vel yes
 # create simulation box
 
 #3D box
-variable           Ly  equal 1.803e-3
-variable           Lx  equal ${Ly}/50*20
-variable           dx   equal 2.5e-5
-variable           sdpd_rho equal 1000
-variable           sdpd_c equal 3e-1
-variable           sdpd_eta equal 1.5e-2
-variable           sdpd_mu  equal ${sdpd_eta}/${sdpd_rho} 
+variable          Ly  equal 1.803e-3
+variable          Lx  equal ${Ly}/50*20
+variable          dx   equal 2.5e-5
+variable          sdpd_rho equal 1000
+variable          sdpd_c equal 3e-1
+variable          sdpd_eta equal 1.5e-2
+variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
 variable          h equal 2.7*${dx}
 variable          gx equal 60.12
 variable          Nfreq equal 10000
 variable          r0       equal 1.4*${dx}
 variable          H        equal 5.3e-4
-include            ${ndim}-vars.lmp
+include           ${ndim}-vars.lmp
 
 region             box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
 read_data           poly3d.txt
@@ -30,13 +30,13 @@ bond_style fene
 bond_coeff 1 ${H} ${r0}  0 0
 mass               1 ${sdpd_mass}
 set                group all meso/rho ${sdpd_rho}
-variable           sdpd_temp index 1e8
+variable           sdpd_temp index 1e7
 pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all meso
 
 variable bodyfx atom mass*${gx}*((y>${Ly}/2.0)-(y<${Ly}/2.0))
-fix reverce_periodic all addforce v_bodyfx 0.0 0.0           
+fix reverce_periodic all addforce v_bodyfx 0.0 0.0
 
 dump               dump_id all custom 10000 dump*.dat id type x y z vx vy vz
 dump_modify        dump_id first yes
@@ -54,6 +54,5 @@ include            settimestep.lmp
 timestep           ${dt}
 
 restart 10000 kana.restart
-run   1000000 every 1000 "velocity all zero linear" & 
+run   1000000 every 1000 "velocity all zero linear" &
 "velocity all zero angular"
-
