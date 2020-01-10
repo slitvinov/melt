@@ -1,6 +1,5 @@
 echo               both
 variable           ndim string  3
-dimension          ${ndim}
 units              si
 atom_style         hybrid  bond meso
 boundary           p p p
@@ -15,22 +14,23 @@ variable          sdpd_rho equal 1000
 variable          sdpd_c equal 3e-1
 variable          sdpd_eta equal 1.5e-2
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
+variable           sdpd_temp index 1e7
 variable          h equal 2.7*${dx}
 variable          gx equal 6.12
 variable          Nfreq equal 10000
 variable          r0       equal 1.4*${dx}
-variable          H        equal 5.3e-4
-include           ${ndim}-vars.lmp
+variable          kb       equal 1.3806488e-23
+variable          H        equal 100*${sdpd_temp}*${kb}/${r0}^2
+include           vars.lmp
 
 region             box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
 read_data           poly3d.txt
 
-special_bonds   lj 1 1 1
-bond_style fene
-bond_coeff 1 ${H} ${r0}  0 0
+special_bonds      lj 1 1 1
+bond_style         fene
+bond_coeff         1 ${H} ${r0}  0 0
 mass               1 ${sdpd_mass}
 set                group all meso/rho ${sdpd_rho}
-variable           sdpd_temp index 1e7
 pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all meso
