@@ -5,10 +5,12 @@
     git clone https://github.com/lammps/lammps
 
     cd lammps/src
-    make yes-USER-SDPD yes-MOLECULE
-    make serial CCFLAGS='-Ofast -g' FFT_LIB=
+    make yes-USER-SPH yes-USER-SDPD yes-MOLECULE
+    make mpi CC=mpic++ LINK=mpicxx
 
     mkdir -p $HOME/bin
-    cp lmp_serial $HOME/bin/lmp
+    cp lmp_mpi $HOME/bin/
+    echo 'mpirun -np 4 lmp_mpi "$@"' > $HOME/bin/lmp
+    chmod +x $HOME/bin/lmp
 
 Add $HOME/bin to the PATH.
