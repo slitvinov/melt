@@ -1,10 +1,14 @@
-git clone https://github.com/lammps/lammps
+# intro
 
-cd lammps/src
-make yes-USER-SDPD yes-MOLECULE
-make serial CCFLAGS='-Ofast -g' FFT_LIB=
-(cd ../tools/eff && make restart2data-pEFF)
+# install
 
-mkdir -p $HOME/bin/
-cp lmp_serial $HOME/bin/
-(cd ../tools/eff && make restart2data-pEFF && cp restart2data-pEFF $HOME/bin/restart2data)
+    git clone https://github.com/lammps/lammps
+
+    cd lammps/src
+    make yes-USER-SDPD yes-MOLECULE
+    make serial CCFLAGS='-Ofast -g' FFT_LIB=
+
+    mkdir -p $HOME/bin
+    cp lmp_serial $HOME/bin/lmp
+
+Add $HOME/bin to the PATH.
