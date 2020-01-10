@@ -48,7 +48,7 @@ BEGIN {
 /atoms/{
     natoms=$1
     print
-    printf("%s bonds\n", "_NUMBER_OF_BOUNDS_")
+    printf("%s bonds\n", "_NUMBER_OF_BONDS_")
     next
 }
 
