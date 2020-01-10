@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+lmp -in ini.lmp
+
+awk -v cutoff=3.0 -v Nbeads=100 -v Nsolvent=0 -v Npoly=full \
+    -f addpolymer.awk poly3d.txt > poly3.txt
+nbound=$(tail -n 1 poly3.txt | awk '{print $1}')
+sed "s/_NUMBER_OF_BOUNDS_/$nbound/1" poly3.txt > poly3d.txt
+
+lmp -in sdpd-polymer3D-run.lmp
