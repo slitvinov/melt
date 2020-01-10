@@ -13,6 +13,7 @@ BEGIN {
     if (Npoly=="full") {
         Npoly = 1e22
     }
+    image[x] = image[y] = image[z] = 0
 }
 
 /LAMMPS/{
@@ -35,7 +36,7 @@ BEGIN {
 /zlo zhi/{
     box[z,lo]=$1
     box[z,hi]=$2
-    L[y] = $2 - $1
+    L[z] = $2 - $1
 }
 
 /atom types/{
@@ -71,17 +72,12 @@ inatoms {
     R[x] = $3
     R[y] = $4
     R[z] = $5
-    image[x] = $(NF-2)
-    image[y] = $(NF-1)
-    image[z] = $(NF-0)
     if (iatom>1) {
         for (idim=1; idim<=3; idim++) {
             if (abs(R[idim]- prevR[idim])>L[idim]/2) {
                 if (R[idim]<prevR[idim]) image[idim]++; else image[idim]--
             }
         }
-    } else {
-        image[x]=0; image[y]=0; image[z]=0
     }
     prevR[x]=R[x]; prevR[y]=R[y]; prevR[z]=R[z]
     $(NF-2)=image[x]; $(NF-1)=image[y];   $(NF-0)=image[z];
