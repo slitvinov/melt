@@ -47,7 +47,7 @@ BEGIN {
     next
 }
 
-NF > 0&& $1 == "Atoms" {
+NF > 0 && $1 == "Atoms" {
     inatoms=1
     print
     getline
@@ -91,7 +91,7 @@ END {
     ibond = 0
     ipoly = 0
     printf("") > "poly.id"
-    for (q=1; q<iatom; q++) {
+    for (q = 1; q < iatom; q++) {
         if (isbound(q)) {
             ibond++
             ip = q
