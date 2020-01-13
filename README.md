@@ -20,4 +20,8 @@ Add $HOME/bin to the PATH.
 
 Produces image.*.ppm. I use feh to open ppm files.
 
+# images
+
+<p align="center"><img src="img/s.gif"/></p>
+
 - feh https://feh.finalrewind.org
