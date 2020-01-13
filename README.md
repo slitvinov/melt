@@ -12,3 +12,8 @@
     cp lmp_mpi $HOME/bin/
 
 Add $HOME/bin to the PATH.
+
+# run
+
+    cd new
+    sh run
