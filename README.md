@@ -17,3 +17,7 @@ Add $HOME/bin to the PATH.
 
     cd new
     sh run
+
+Produces image.*.ppm. I use feh to open ppm files.
+
+- feh https://feh.finalrewind.org
