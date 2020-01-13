@@ -20,7 +20,7 @@ Add $HOME/bin to the PATH.
 
 Produces image.*.ppm. I use feh to open ppm files.
 
-# images
+# results
 
 <p align="center"><img src="img/s.gif"/></p>
 
