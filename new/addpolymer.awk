@@ -1,18 +1,13 @@
-function isbound(atom_number,        period, rem, current_npoly) {
-    period = Nbeads + Nsolvent
-    rem = (atom_number-1)%(period) # from 0 to period-1
-    current_npoly = int(atom_number/period) + 1
-    return (rem<Nbeads-1) && (atom_number<iatom)  && (current_npoly<=Npoly)
-}
-
 BEGIN {
-    inatoms=0
-    lo=1; hi=2
-    x=1; y=2; z=3
+    inatoms = 0
+    lo = 1
+    hi = 2
+    x = 1
+    y = 2
+    z = 3
     iatom=0
-    if (Npoly=="full") {
+    if (Npoly == "full")
         Npoly = 1e22
-    }
     image[x] = image[y] = image[z] = 0
 }
 
@@ -22,14 +17,14 @@ BEGIN {
 }
 
 /xlo xhi/{
-    box[x,lo]=$1
-    box[x,hi]=$2
+    box[x,lo] = $1
+    box[x,hi] = $2
     L[x] = $2 - $1
 }
 
 /ylo yhi/{
-    box[y,lo]=$1
-    box[y,hi]=$2
+    box[y,lo] = $1
+    box[y,hi] = $2
     L[y] = $2 - $1
 }
 
@@ -39,29 +34,28 @@ BEGIN {
     L[z] = $2 - $1
 }
 
-/atom types/{
+/atom types/ {
     print
     print "1 bond types"
     next
 }
 
-/atoms/{
-    natoms=$1
+/atoms/ {
+    natoms = $1
     print
-    printf("%s bonds\n", "_NUMBER_OF_BONDS_")
+    printf "%s bonds\n", "_NUMBER_OF_BONDS_"
     next
 }
 
-(NF>0)&&($1=="Atoms"){
+NF > 0&& $1 == "Atoms" {
     inatoms=1
     print
-    # skip empty line
     getline
     printf "\n"
     next
 }
 
-inatoms && (NF==0) {
+inatoms && NF ==0 {
     inatoms = 0
     print
     next
@@ -73,15 +67,17 @@ inatoms {
     R[y] = $4
     R[z] = $5
     if (iatom>1) {
-        for (idim=1; idim<=3; idim++) {
-            if (abs(R[idim]- prevR[idim])>L[idim]/2) {
-                if (R[idim]<prevR[idim]) image[idim]++; else image[idim]--
-            }
-        }
+        for (i = 1; i <= 3; i++)
+            if (abs(R[i]- prevR[i])>L[i]/2)
+                if (R[i]<prevR[i]) image[i]++; else image[i]--
     }
-    prevR[x]=R[x]; prevR[y]=R[y]; prevR[z]=R[z]
-    $(NF-2)=image[x]; $(NF-1)=image[y];   $(NF-0)=image[z];
-    print $0
+    prevR[x] = R[x]
+    prevR[y] = R[y]
+    prevR[z] = R[z]
+    $(NF-2) = image[x]
+    $(NF-1) = image[y]
+    $(NF-0) = image[z];
+    print
     next
 }
 
@@ -91,7 +87,7 @@ inatoms {
 }
 
 END {
-    printf("\nBonds\n\n")
+    printf "\nBonds\n\n"
     ibond = 0
     ipoly = 0
     printf("") > "poly.id"
@@ -109,7 +105,7 @@ END {
                 ipoly++
             }
             print ip, ipoly >> "poly.id"
-            prev=jp    
+            prev = jp
         }
     }
 }
@@ -119,6 +115,19 @@ function msg(fmt, a, b, c, d, e , f)
     printf fmt "\n", a, b, c, d, e, f | "cat >&2"
 }
 
+function err(fmt, a, b, c, d, e, f)
+{
+    msg(fmt, a, b, c, d, e, f)
+    exit(2)
+}
+
 function abs(x) {
     return x > 0 ? x : -x
+}
+
+function isbound(atom_number,        period, rem, current_npoly) {
+    period = Nbeads + Nsolvent
+    rem = (atom_number-1)%(period)
+    current_npoly = int(atom_number/period) + 1
+    return (rem<Nbeads-1) && (atom_number<iatom)  && (current_npoly<=Npoly)
 }
