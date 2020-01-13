@@ -125,9 +125,9 @@ function abs(x) {
     return x > 0 ? x : -x
 }
 
-function isbound(atom_number,        period, rem, current_npoly) {
-    period = Nbeads + Nsolvent
-    rem = (atom_number-1)%(period)
-    current_npoly = int(atom_number/period) + 1
-    return (rem<Nbeads-1) && (atom_number<iatom)  && (current_npoly<=Npoly)
+function isbound(i,        p, r, np) {
+    p = Nbeads + Nsolvent
+    r = (i-1) % p
+    np = int(i/p) + 1
+    return r < Nbeads-1 && i < iatom && np <= Npoly
 }
