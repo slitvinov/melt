@@ -1,0 +1,16 @@
+/* rho, kT, eta, l */
+load("dimension");
+
+qput(rho, 'M/'L^3, dimension);
+qput(kT, 'M*'L^2/'T^2, dimension);
+qput(eta, 'M/('L*'T), dimension);
+qput(l, 'L, dimension);
+
+%u: ['L = 1, 'T = 1, 'M = 1000];
+
+d(e):= subst(%u, e/dimension(e));
+
+d(1000*rho);
+d(kT);
+d(eta);
+d(l);

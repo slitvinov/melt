@@ -7,17 +7,16 @@ comm_modify       vel yes
 variable          Ly  equal 1.803e-3
 variable          Lx  equal ${Ly}/50*20
 variable          dx   equal 2.5e-5
-variable          sdpd_rho equal 1.0
-variable          sdpd_c equal 1.0
+variable          sdpd_rho equal 1
+variable          sdpd_c equal 9.5e-3
 variable          sdpd_eta equal 1.5e-5
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
-variable          sdpd_temp equal 1e7
+variable          sdpd_temp equal 1e6
 variable          h equal 2.7*${dx}
 variable          gx equal 0.612
-variable          Nfreq equal 10000
 variable          r0       equal 1.4*${dx}
 variable          kb       equal 1.3806488e-23
-variable          H        equal 200*${sdpd_temp}*${kb}/${r0}^2
+variable          H        equal 100*${sdpd_temp}*${kb}/${r0}^2
 include           vars.lmp
 
 region            box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
@@ -25,8 +24,8 @@ read_data         poly3d.txt
 
 special_bonds      lj 1 1 1
 bond_style         fene
-bond_coeff         1 ${H} ${r0}  0 0
-mass               1 ${sdpd_mass}
+bond_coeff         * ${H} ${r0}  0 0
+mass               * ${sdpd_mass}
 set                group all meso/rho ${sdpd_rho}
 pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
@@ -49,8 +48,6 @@ neigh_modify       delay 0 check no
 
 include            settimestep.lmp
 timestep           ${dt}
-
-restart 10000 kana.restart
 
 variable           neq equal round(${teq}/${dt})
 run  ${neq} every 1000 "velocity all zero linear" &
