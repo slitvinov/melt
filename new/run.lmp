@@ -20,7 +20,7 @@ variable          gx equal 6.12
 variable          Nfreq equal 10000
 variable          r0       equal 1.4*${dx}
 variable          kb       equal 1.3806488e-23
-variable          H        equal 1000*${sdpd_temp}*${kb}/${r0}^2
+variable          H        equal 200*${sdpd_temp}*${kb}/${r0}^2
 include           vars.lmp
 
 region             box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
@@ -45,16 +45,18 @@ thermo             10
 variable atomradius  equal ${dx}*0.25
 dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 2.8 box yes 0.01 size 1024 1024
 dump_modify        imgDump pad 9
-variable           skin equal 0.1*$h
-neighbor           ${skin} bin
+neigh_modify       every 1 delay 0 check no once no
 include            settimestep.lmp
 timestep           ${dt}
 
 restart 10000 kana.restart
-run   1000000 every 1000 "velocity all zero linear" &
+
+variable           neq equal round(${teq}/${dt})
+run  ${neq} every 1000 "velocity all zero linear" &
 "velocity all zero angular"
 
 variable bodyfx atom mass*${gx}*((y>${Ly}/2.0)-(y<${Ly}/2.0))
-fix reverce_periodic all addforce v_bodyfx 0.0 0.0
+fix reverce_periodic all addforce v_bodyfx 0 0
+
 run  1000000 every 1000 "velocity all zero linear" &
 "velocity all zero angular"
