@@ -7,8 +7,8 @@ comm_modify       vel yes
 variable          Ly  equal 1.803e-3
 variable          Lx  equal ${Ly}/50*20
 variable          dx   equal 2.5e-5
-variable          sdpd_rho equal 1
-variable          sdpd_c equal 3e-4
+variable          sdpd_rho equal 1.0
+variable          sdpd_c equal 1.0
 variable          sdpd_eta equal 1.5e-5
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
 variable          sdpd_temp equal 1e7
@@ -37,7 +37,7 @@ dump_modify        dump_id first yes
 dump_modify        dump_id sort id
 dump_modify        dump_id pad 8
 
-thermo_modify      norm no
+thermo_modify      norm no flush yes
 thermo             10
 variable atomradius  equal ${dx}*0.25
 dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 2.8 box yes 0.01 size 1024 1024
