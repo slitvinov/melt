@@ -55,5 +55,5 @@ timestep           ${dt}
 
 restart 10000 kana.restart
 
-run  9999999999999 every 1000 "velocity all zero linear" &
+run  99999999 every 1000 "velocity all zero linear" &
 "velocity all zero angular"
