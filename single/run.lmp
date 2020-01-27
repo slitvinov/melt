@@ -7,8 +7,9 @@ comm_modify vel yes
 # create simulation box
 
 #3D box
-variable          Ly  equal 1.803e-3
-variable          Lx  equal ${Ly}/50*20
+variable          Lx  equal 1.803e-3*0.4
+variable          Ly  equal ${Lx}
+variable          Lz  equal ${Lx}
 variable          dx   equal 2.5e-5
 variable          sdpd_rho equal 1000
 variable          sdpd_c equal 3e-1
@@ -35,7 +36,7 @@ pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all meso
 
-dump               dump_id all custom 10000 dump*.dat id type x y z vx vy vz
+dump               dump_id all custom 10000 dump.*.dat id type x y z vx vy vz
 dump_modify        dump_id first yes
 dump_modify        dump_id sort id
 dump_modify        dump_id pad 8

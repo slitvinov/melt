@@ -3,8 +3,9 @@ dimension          3
 units              si
 atom_style         hybrid  bond meso
 boundary          p p p
-variable           Ly  equal 1.803e-3
-variable           Lx  equal ${Ly}/50*10
+variable          Lx  equal 1.803e-3*0.4
+variable          Ly  equal ${Lx}
+variable          Lz  equal ${Lx}
 variable           dx   equal 2.5e-5
 variable           sdpd_rho equal 1000
 include            vars.lmp
