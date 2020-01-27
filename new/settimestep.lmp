@@ -1,5 +1,5 @@
-variable dt_eta equal ${dx}*${dx}/(${sdpd_mu})/16
-variable dt_c equal ${dx}/${sdpd_c}/32
+variable dt_eta equal ${dx}*${dx}/(${sdpd_mu})/16/5.0
+variable dt_c equal ${dx}/${sdpd_c}/32/5.0
 
 if "${dt_c}>${dt_eta}" then &
 "variable dt equal ${dt_eta}" &
