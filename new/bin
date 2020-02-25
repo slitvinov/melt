@@ -1,0 +1,57 @@
+#!/bin/sh
+
+awk -v me=bin '
+BEGIN {
+    l = 1.8029999999999999e-03
+    n = 20
+}
+
+END {
+    for (i = 0; i < n; i++)
+        if (cnt = nb[i])
+            print yb[i]/cnt, sb[i]/cnt, vb[i]/cnt
+}
+
+FNR == 1 {
+    flag = 0
+}
+
+flag {
+    y = s("y")
+    i = bin(y)
+    nb[i] ++
+    yb[i] += y
+    vb[i] += s("vx")
+    sb[i] += s("v_xy")
+}
+
+/^ITEM: ATOMS/ {
+    parse()
+    flag = 1
+}
+
+function bin(x) {
+    return int(x / l * n)
+}
+
+function parse(   n, k, a) {
+    sub(/^ITEM: ATOMS /, "")
+    n = split($0, a)
+    for (k in a)
+        _d[a[k]] = k
+}
+
+function s(k) {
+    if (!(k in _d))
+        err("unknown key: " k)
+    k = _d[k]
+    return $k
+}
+
+function err(s)
+{
+    print me ": " s | "cat >&2"
+    exit(2)
+}
+
+' "$@"

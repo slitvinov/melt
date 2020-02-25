@@ -2,9 +2,9 @@
 
 set -e
 mpirun -np 1 lmp_mpi < ini.lmp
-awk -v Nbeads=20 -v Nsolvent=0 -v Npoly=all \
+awk -v Nbeads=2 -v Nsolvent=1 -v Npoly=1 \
     -f addpolymer.awk poly3d.txt > poly3.txt
 nbond=$(tail -n 1 poly3.txt | awk '{print $1}')
 sed "s/_NUMBER_OF_BONDS_/$nbond/1" poly3.txt > poly3d.txt
 
-mpirun -np 4 lmp_mpi -var teq 0.1 < run.lmp
+mpirun -np 4 lmp_mpi -var teq 0.0 < run.lmp
