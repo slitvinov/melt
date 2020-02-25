@@ -1,0 +1,74 @@
+#!/bin/sh
+
+for i
+do if test "$i" = -
+   then shift
+        break
+   fi
+   if ! test -f "$i"
+   then echo >&2 "not a file '$i'"
+        exit 2
+   fi
+   List="$List $i"
+   shift
+done
+
+t=/tmp/lpunto.$$
+trap 'rm $t; exit 2' 1 2 3 15
+
+awk -v me=lpunto '
+FNR == 1 {
+    flag = 0
+    if (NR != FNR)
+       printf "\n"
+}
+
+flag {
+    print s("x"), s("y"), s("z"), s("vx"), s("vy"), s("vz"), s("v_xy")
+}
+
+/^ITEM: BOX BOUNDS/ {
+    getline
+    getline
+    l = $2
+    getline
+}
+
+/^ITEM: ATOMS/ {
+    parse()
+    flag = 1
+}
+
+function parse(   k, a) {
+    sub(/^ITEM: ATOMS /, "")
+    Keys = $0
+    split($0, a)
+    for (k in a)
+        _Keys[a[k]] = k
+}
+
+function s(k) {
+    if (!(k in _Keys))
+        err("unknown key: " k)
+    k = _Keys[k]
+    return $k
+}
+
+function err(s)
+{
+    print me ": " s | "cat >&2"
+    exit(2)
+}
+
+' $List > "$t"
+
+if test $? -ne 0
+then echo >&2 "$me: conversion failed"
+     exit 2
+fi
+
+"${PUNTO=punto}" "$@" "$t"
+status=$?
+
+rm -f "$t"
+exit $status
