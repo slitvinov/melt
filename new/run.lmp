@@ -49,7 +49,7 @@ dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
 neighbor           ${skin} bin
-neigh_modify       delay 0 check no
+neigh_modify       delay 0 check yes
 
 include            settimestep.lmp
 timestep           ${dt}

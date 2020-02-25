@@ -1,11 +1,6 @@
 #!/bin/sh
 
-awk -v me=bin '
-BEGIN {
-    l = 1.8029999999999999e-03
-    n = 20
-}
-
+awk -v me=bin -v n=20 '
 END {
     for (i = 0; i < n; i++)
         if (cnt = nb[i])
@@ -23,6 +18,13 @@ flag {
     yb[i] += y
     vb[i] += s("vx")
     sb[i] += s("v_xy")
+}
+
+/^ITEM: BOX BOUNDS/ {
+    getline
+    getline
+    l = $2
+    getline
 }
 
 /^ITEM: ATOMS/ {
