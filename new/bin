@@ -5,7 +5,8 @@ END {
     print Keys
     for (b = 0; b < n; b++) {
         for (i = 1; i <= NF; i++)
-            printf Data[i, b]/Cnt[b] " "
+            if (Cnt[b] != 0)
+                printf Data[i, b]/Cnt[b] " "
         printf "\n"
     }
 }
