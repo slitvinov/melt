@@ -31,12 +31,13 @@ pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all meso
 
-compute            stress all stress/atom NULL bond pair
-variable           xx atom c_stress[1]
-variable           yy atom c_stress[2]
-variable           zz atom c_stress[3]
-variable           xy atom c_stress[4]
-dump               dump_id all custom 100 dump.*.dat id type x y z vx vy vz v_xx v_yy v_zz v_xy
+compute            bstress all stress/atom NULL bond
+variable           b atom c_bstress[4]
+
+compute            pstress all stress/atom NULL pair
+variable           p atom c_pstress[4]
+
+dump               dump_id all custom 100 dump.*.dat id type x y z vx vy vz v_b v_p
 dump_modify        dump_id first yes
 dump_modify        dump_id sort id
 dump_modify        dump_id pad 8

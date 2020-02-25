@@ -2,9 +2,12 @@
 
 awk -v me=bin -v n=20 '
 END {
-    for (i = 0; i < n; i++)
-        if (cnt = nb[i])
-            print yb[i]/cnt, sb[i]/cnt, vb[i]/cnt
+    print Keys
+    for (b = 0; b < n; b++) {
+        for (i = 1; i <= NF; i++)
+            printf Data[i, b]/Cnt[b] " "
+        printf "\n"
+    }
 }
 
 FNR == 1 {
@@ -13,11 +16,10 @@ FNR == 1 {
 
 flag {
     y = s("y")
-    i = bin(y)
-    nb[i] ++
-    yb[i] += y
-    vb[i] += s("vx")
-    sb[i] += s("v_xy")
+    b = bin(y)
+    Cnt[b] ++
+    for (i = 1; i <= NF; i++)
+        Data[i, b] += $i
 }
 
 /^ITEM: BOX BOUNDS/ {
@@ -36,17 +38,18 @@ function bin(x) {
     return int(x / l * n)
 }
 
-function parse(   n, k, a) {
+function parse(   k, a) {
     sub(/^ITEM: ATOMS /, "")
-    n = split($0, a)
+    Keys = $0
+    split($0, a)
     for (k in a)
-        _d[a[k]] = k
+        _Keys[a[k]] = k
 }
 
 function s(k) {
-    if (!(k in _d))
+    if (!(k in _Keys))
         err("unknown key: " k)
-    k = _d[k]
+    k = _Keys[k]
     return $k
 }
 

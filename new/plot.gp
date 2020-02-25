@@ -4,6 +4,5 @@ unset xtics
 unset key
 
 l = 1.803e-03
-plot [0:l] "<./bin dump.0000[1]???.dat" u 1:3 w lp, "<./bin dump.0000[2]???.dat" u 1:3 w lp, "<./bin dump.0000[3]???.dat" u 1:3 w lp
-
-
+plot [0:l] \
+     "<./bin dump.000[0-1][7-9]???.dat" u 1:2 w lp
