@@ -1,1 +1,1 @@
-mpirun -np 1 lmp_mpi < main.lmp
+mpirun -np 2 lmp_mpi < main.lmp

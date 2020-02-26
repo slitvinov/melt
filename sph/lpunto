@@ -1,5 +1,13 @@
 #!/bin/sh
 
+: ${PUNTO=punto}
+
+if ! "$PUNTO" -h >/dev/null 2>/dev/null
+then echo >&2 "$PUNTO is not found"
+     exit 2
+fi
+
+List=
 for i
 do if test "$i" = -
    then shift
@@ -12,6 +20,11 @@ do if test "$i" = -
    List="$List $i"
    shift
 done
+
+if test -z "$List"
+then "$PUNTO" "$@"
+     exit $?
+fi
 
 t=/tmp/lpunto.$$
 trap 'rm $t; exit 2' 1 2 3 15
@@ -59,16 +72,12 @@ function err(s)
     print me ": " s | "cat >&2"
     exit(2)
 }
-
 ' $List > "$t"
-
 if test $? -ne 0
 then echo >&2 "$me: conversion failed"
      exit 2
 fi
-
-"${PUNTO=punto}" "$@" "$t"
+"$PUNTO" "$@" "$t"
 status=$?
-
 rm -f "$t"
 exit $status
