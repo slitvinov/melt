@@ -9,3 +9,4 @@ s(y), %s, factor;
 
 float(ev(s(x)*V, %s, factor, x = l, F = 1e-4, l = 1e-3, rho = 1e3, V = dx^3, dx = l/n, n = 50, infeval));
 
+ev(dx, dx = l/n, n = 50, infeval, l = 1e-3);
