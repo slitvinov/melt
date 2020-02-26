@@ -37,7 +37,7 @@ FNR == 1 {
 }
 
 flag {
-    print s("x"), s("y"), s("z"), s("vx"), s("vy"), s("vz"), s("v_xy")
+    print s("x"), s("y"), s("z"), s("vx"), s("vy"), s("vz")
 }
 
 /^ITEM: BOX BOUNDS/ {
