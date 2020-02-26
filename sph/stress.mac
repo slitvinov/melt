@@ -1,3 +1,0 @@
-v: F/(2*eta)*y*(L - y);
-
-eta*diff(v, y)/2, factor, L = L/2;
