@@ -1,1 +1,13 @@
+#!/bin/sh
+
+if ! lmp_mpi -h >/dev/null 2>/dev/null
+then echo >&2 "lmp_mpi is not found"
+     exit 2
+fi
+
+if ! mpirun -h >/dev/null 2>/dev/null
+then echo >&2 "mpirun is not found"
+     exit 2
+fi
+
 mpirun -np 2 lmp_mpi < main.lmp
