@@ -1,0 +1,11 @@
+s(x):= b * x + a;
+
+%q: [s(x) * S - s(x + d) * S - S * d * rho * F,
+     s(l/2) = 0];
+
+%s: linsolve(%q, [b, a]);
+
+s(y), %s, factor;
+
+float(ev(s(x)*V, %s, factor, x = l, F = 1e-4, l = 1e-3, rho = 1e3, V = dx^3, dx = l/n, n = 50, infeval));
+
