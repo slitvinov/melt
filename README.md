@@ -6,7 +6,7 @@
 git clone https://github.com/lammps/lammps
 
 cd lammps/src
-make yes-DPD-SMOOTH yes-MOLECULE
+make yes-SPH yes-DPD-SMOOTH yes-MOLECULE
 make -j4 mpi CC=mpic++ LINK=mpicxx
 
 mkdir -p $HOME/.local/bin
