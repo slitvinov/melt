@@ -1,7 +1,7 @@
 echo               both
 dimension          3
 units              si
-atom_style         hybrid  bond meso
+atom_style         hybrid  bond sph
 boundary           p p p
 variable           Ly  equal 1.803e-3
 variable           Lx  equal ${Ly}/50*10

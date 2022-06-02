@@ -1,7 +1,7 @@
 echo              both
 variable          ndim string  3
 units             si
-atom_style        hybrid  bond meso
+atom_style        hybrid  bond sph
 boundary          p p p
 comm_modify       vel yes
 variable          Ly  equal 1.803e-3
@@ -26,10 +26,10 @@ special_bonds      lj 1 1 1
 bond_style         fene
 bond_coeff         * ${H} ${r0}  0 0
 mass               * ${sdpd_mass}
-set                group all meso/rho ${sdpd_rho}
+set                group all sph/rho ${sdpd_rho}
 pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
-fix                integrate_fix_full all meso
+fix                integrate_fix_full all sph
 
 compute            bstress all stress/atom NULL bond
 variable           b atom c_bstress[4]
