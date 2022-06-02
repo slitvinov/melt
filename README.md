@@ -6,14 +6,14 @@
 git clone https://github.com/lammps/lammps
 
 cd lammps/src
-make yes-USER-SPH yes-USER-SDPD yes-MOLECULE
-make mpi CC=mpic++ LINK=mpicxx
+make yes-DPD-SMOOTH yes-MOLECULE
+make -j4 mpi CC=mpic++ LINK=mpicxx
 
-mkdir -p $HOME/bin
-cp lmp_mpi $HOME/bin/
+mkdir -p $HOME/.local/bin
+cp lmp_mpi $HOME/.local/bin/
 </pre>    
 
-Add `$HOME/bin` to the `PATH`.
+Add `$HOME/.local/bin` to the `PATH`.
 
 <h1>Kolmogorov flow</h1>
 
