@@ -45,7 +45,7 @@ dump_modify        dump_id pad 8
 thermo_modify      norm no flush yes
 thermo             10
 variable atomradius  equal ${dx}*0.25
-dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 2.8 box yes 0.01 size 1024 1024
+dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 1.45 box yes 0.01 size 1024 1024
 dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
