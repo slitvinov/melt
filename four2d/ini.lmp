@@ -1,5 +1,5 @@
 echo               both
-dimension          3
+dimension          2
 units              si
 atom_style         hybrid  bond sph
 boundary           p p p
@@ -10,7 +10,7 @@ variable           sdpd_rho equal 1
 include            vars.lmp
 region             box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
 create_box         1 box
-lattice            sc ${dx}
+lattice            sq ${dx}
 create_atoms       1 region box
 mass               1  ${sdpd_mass}
-write_data         poly3d.txt
+write_data         poly2d.txt

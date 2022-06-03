@@ -1,5 +1,6 @@
 echo              both
-variable          ndim string  3
+variable          ndim string  2
+dimension         ${ndim}
 units             si
 atom_style        hybrid  bond sph
 boundary          p p p
@@ -11,16 +12,16 @@ variable          sdpd_rho equal 1
 variable          sdpd_c equal 9.5e-3
 variable          sdpd_eta equal 1.5e-5
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
-variable          sdpd_temp equal 1e5
+variable          sdpd_temp equal 1e9
 variable          h equal 2.7*${dx}
-variable          gx equal 61.2
+variable          gx equal 6.12
 variable          r0       equal 1.4*${dx}
 variable          kb       equal 1.3806488e-23
 variable          H        equal 100*${sdpd_temp}*${kb}/${r0}^2
 include           vars.lmp
 
 region            box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
-read_data         poly3d.txt
+read_data         poly2d.txt
 
 special_bonds      lj 1 1 1
 bond_style         fene
@@ -30,6 +31,7 @@ set                group all sph/rho ${sdpd_rho}
 pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
 pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all sph
+fix                enforce2d all enforce2d
 
 compute            bstress all stress/atom NULL bond
 variable           b atom c_bstress[4]
@@ -44,8 +46,8 @@ dump_modify        dump_id pad 8
 
 thermo_modify      norm no flush yes
 thermo             10
-variable atomradius  equal ${dx}*0.25
-dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 1.4 box yes 0.01 size 1024 1024
+variable           atomradius  equal ${dx}*0.25
+dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} zoom 1.4 box yes 0.01 size 1024 1024
 dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
@@ -61,6 +63,6 @@ run  ${neq} every 1000 "velocity all zero linear" &
 
 variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
 variable bodyfy atom mass*${gx}*cos(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
-fix reverce_periodic all addforce v_bodyfx v_bodyfy 0
+fix addforce all addforce v_bodyfx v_bodyfy 0
 
 run  10000000 every 1000 "velocity all zero linear"
