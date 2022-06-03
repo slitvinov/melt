@@ -13,7 +13,7 @@ variable          sdpd_eta equal 1.5e-5
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
 variable          sdpd_temp equal 1e5
 variable          h equal 2.7*${dx}
-variable          gx equal 0.612
+variable          gx equal 61.2
 variable          r0       equal 1.4*${dx}
 variable          kb       equal 1.3806488e-23
 variable          H        equal 100*${sdpd_temp}*${kb}/${r0}^2
@@ -45,7 +45,7 @@ dump_modify        dump_id pad 8
 thermo_modify      norm no flush yes
 thermo             10
 variable atomradius  equal ${dx}*0.25
-dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 1.45 box yes 0.01 size 1024 1024
+dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} view 60 60 zoom 1.4 box yes 0.01 size 1024 1024
 dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
@@ -59,9 +59,8 @@ variable           neq equal round(${teq}/${dt})
 run  ${neq} every 1000 "velocity all zero linear" &
 "velocity all zero angular"
 
-variable           pi equal 3.141592653589793
-variable bodyfx atom mass*${gx}*sin(2*${pi}*x/${Lx})*sin(2*${pi}*y/${Ly})
-variable bodyfy atom mass*${gx}*cos(2*${pi}*x/${Lx})*cos(2*${pi}*y/${Ly})
+variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
+variable bodyfy atom mass*${gx}*cos(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
 fix reverce_periodic all addforce v_bodyfx v_bodyfy 0
 
 run  10000000 every 1000 "velocity all zero linear"
