@@ -55,4 +55,4 @@ variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
 variable bodyfy atom -mass*${gx}*cos(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
 fix addforce all addforce v_bodyfx v_bodyfy 0
 
-run  10000000 every 1000 "velocity all zero linear"
+run  100000000 every 1000 "velocity all zero linear"
