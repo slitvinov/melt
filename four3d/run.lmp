@@ -59,8 +59,8 @@ variable           neq equal round(${teq}/${dt})
 run  ${neq} every 1000 "velocity all zero linear" &
 "velocity all zero angular"
 
-variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
-variable bodyfy atom mass*${gx}*cos(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
+variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
+variable bodyfy atom -mass*${gx}*cos(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
 fix reverce_periodic all addforce v_bodyfx v_bodyfy 0
 
 run  10000000 every 1000 "velocity all zero linear"

@@ -4,11 +4,10 @@ BEGIN {
     hi = 2
     x = 1
     y = 2
-    z = 3
     iatom=0
     if (Npoly == "full")
         Npoly = 1e22
-    image[x] = image[y] = image[z] = 0
+    image[x] = image[y] = 0
 }
 
 /LAMMPS/{
@@ -65,18 +64,15 @@ inatoms {
     iatom++
     R[x] = $3
     R[y] = $4
-    R[z] = $5
     if (iatom>1) {
-        for (i = 1; i <= 3; i++)
+        for (i = 1; i <= 2; i++)
             if (abs(R[i]- prevR[i])>L[i]/2)
                 if (R[i]<prevR[i]) image[i]++; else image[i]--
     }
     prevR[x] = R[x]
     prevR[y] = R[y]
-    prevR[z] = R[z]
     $(NF-2) = image[x]
     $(NF-1) = image[y]
-    $(NF-0) = image[z];
     print
     next
 }

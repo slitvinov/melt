@@ -3,10 +3,6 @@ dimension          2
 units              si
 atom_style         hybrid  bond sph
 boundary           p p p
-variable           Ly  equal 1.803e-3
-variable           Lx  equal ${Ly}
-variable           dx   equal 2.5e-5
-variable           sdpd_rho equal 1
 include            vars.lmp
 region             box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
 create_box         1 box

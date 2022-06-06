@@ -1,24 +1,20 @@
 echo              both
 variable          ndim string  2
-dimension         ${ndim}
+include           vars.lmp
 units             si
 atom_style        hybrid  bond sph
 boundary          p p p
 comm_modify       vel yes
-variable          Ly  equal 1.803e-3
-variable          Lx  equal ${Ly}
-variable          dx   equal 2.5e-5
-variable          sdpd_rho equal 1
-variable          sdpd_c equal 9.5e-3
+variable          sdpd_c equal 0.8
 variable          sdpd_eta equal 1.5e-5
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
 variable          sdpd_temp equal 1e9
 variable          h equal 2.7*${dx}
-variable          gx equal 6.12
+variable          gx equal 2.0
 variable          r0       equal 1.4*${dx}
 variable          kb       equal 1.3806488e-23
 variable          H        equal 100*${sdpd_temp}*${kb}/${r0}^2
-include           vars.lmp
+
 
 region            box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
 read_data         poly2d.txt
@@ -33,13 +29,7 @@ pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all sph
 fix                enforce2d all enforce2d
 
-compute            bstress all stress/atom NULL bond
-variable           b atom c_bstress[4]
-
-compute            pstress all stress/atom NULL pair
-variable           p atom c_pstress[4]
-
-dump               dump_id all custom 100 dump.*.dat id type x y z vx vy vz v_b v_p
+dump               dump_id all custom 1000 dump.*.dat id type x y z vx vy vz
 dump_modify        dump_id first yes
 dump_modify        dump_id sort id
 dump_modify        dump_id pad 8
@@ -47,7 +37,8 @@ dump_modify        dump_id pad 8
 thermo_modify      norm no flush yes
 thermo             10
 variable           atomradius  equal ${dx}*0.25
-dump imgDump all image 100 image.*.ppm type type atom no bond atom ${atomradius} zoom 1.4 box yes 0.01 size 1024 1024
+variable           vel atom sqrt(vx^2+vy^2)
+dump               imgDump all image 1000 image.*.ppm v_vel type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
 dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
@@ -61,8 +52,8 @@ variable           neq equal round(${teq}/${dt})
 run  ${neq} every 1000 "velocity all zero linear" &
 "velocity all zero angular"
 
-variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
-variable bodyfy atom mass*${gx}*cos(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
+variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
+variable bodyfy atom -mass*${gx}*cos(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
 fix addforce all addforce v_bodyfx v_bodyfy 0
 
 run  10000000 every 1000 "velocity all zero linear"

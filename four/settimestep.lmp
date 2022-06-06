@@ -1,9 +1,0 @@
-variable dt_eta equal ${dx}*${dx}/(${sdpd_mu})/16
-variable dt_c equal ${dx}/${sdpd_c}/8
-
-if "${dt_c}>${dt_eta}" then &
-"variable dt equal ${dt_eta}" &
-else &
-"variable dt equal ${dt_c}"
-
-print "(settimestep) ${dt_c} ${dt_eta} ${dt}"

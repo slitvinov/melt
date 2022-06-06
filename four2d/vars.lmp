@@ -1,2 +1,8 @@
-variable           sdpd_mass equal ${dx}*${dx}*${sdpd_rho}
-variable           Lz  equal ${Ly}/100
+dimension         2
+variable          sdpd_rho equal 1
+variable          Ly  equal 3.8e-3
+variable          Lx  equal ${Ly}
+variable          dx   equal 2.5e-5
+variable          sdpd_mass equal ${dx}*${dx}*${sdpd_rho}
+variable          Lz  equal ${Ly}/100
+
