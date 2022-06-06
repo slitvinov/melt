@@ -29,16 +29,15 @@ pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all sph
 fix                enforce2d all enforce2d
 
-dump               dump_id all custom 1000 dump.*.dat id type x y z vx vy vz
+dump               dump_id all custom 1000 dump.*.dat id type x y vx vy
 dump_modify        dump_id first yes
 dump_modify        dump_id sort id
 dump_modify        dump_id pad 8
 
 thermo_modify      norm no flush yes
-thermo             10
+thermo             100
 variable           atomradius  equal ${dx}*0.25
-variable           vel atom sqrt(vx^2+vy^2)
-dump               imgDump all image 1000 image.*.ppm v_vel type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
+dump               imgDump all image 1000 image.*.ppm type type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
 dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
