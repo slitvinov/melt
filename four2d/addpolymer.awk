@@ -83,7 +83,6 @@ END {
             print ibond, bondtype, ip, jp
             if (ip != prev)
                 ipoly++
-            print ip, ipoly >> "poly.id"
             prev = jp
         }
     }
