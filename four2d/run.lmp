@@ -29,7 +29,7 @@ pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all sph
 fix                enforce2d all enforce2d
 
-dump               dump_bin all custom 1000 dump.*.bin id type x y vx vy
+dump               dump_bin all custom 5000 dump.*.bin id type x y vx vy
 dump_modify        dump_bin first yes
 dump_modify        dump_bin sort id
 dump_modify        dump_bin pad 8
@@ -37,7 +37,7 @@ dump_modify        dump_bin pad 8
 thermo_modify      norm no flush yes
 thermo             100
 variable           atomradius  equal ${dx}*0.25
-dump               imgDump all image 1000 image.*.ppm type type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
+dump               imgDump all image 5000 image.*.ppm type type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
 dump_modify        imgDump pad 9
 
 variable           skin equal 0.001*$h
@@ -55,4 +55,4 @@ variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
 variable bodyfy atom -mass*${gx}*cos(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
 fix addforce all addforce v_bodyfx v_bodyfy 0
 
-run  100000000 every 1000 "velocity all zero linear"
+run  100000000 every 5000 "velocity all zero linear"
