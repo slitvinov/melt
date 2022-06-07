@@ -29,10 +29,10 @@ pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all sph
 fix                enforce2d all enforce2d
 
-dump               dump_id all custom 1000 dump.*.dat id type x y vx vy
-dump_modify        dump_id first yes
-dump_modify        dump_id sort id
-dump_modify        dump_id pad 8
+dump               dump_bin all custom 1000 dump.*.bin id type x y vx vy
+dump_modify        dump_bin first yes
+dump_modify        dump_bin sort id
+dump_modify        dump_bin pad 8
 
 thermo_modify      norm no flush yes
 thermo             100
