@@ -1,5 +1,6 @@
-import sys
+import array
 import struct
+import sys
 
 path = sys.argv[1]
 
@@ -15,7 +16,7 @@ with open(path, "rb") as file:
     if triclinic:
         sys.stderr.write("triclinic is not supported\n")
         sys.exit(1)
-    size_one = unpack('i', file)
+    size_one = unpack('i', file)[0]
     if not revision > 1:
         sys.stderr.write("revision %d is not supported\n" % revision)
         sys.exit(1)
@@ -27,9 +28,13 @@ with open(path, "rb") as file:
         time = unpack('d', file)
     len0 = unpack('i', file)[0]
     columns = unpack('%ds' % len0, file)[0].decode('ascii')
+    columns = columns.split()
     nchunk = unpack('i', file)[0]
     for i in range(nchunk):
         n = unpack('i', file)[0]
-        buf = unpack('%dd' % n, file)
-        print(i, nchunk, n)
-
+        buf = file.read(n * struct.calcsize('d'))
+        a = array.array('d', buf)
+        x = a[columns.index("x")::size_one]
+        y = a[columns.index("y")::size_one]
+        id0 = a[columns.index("id")::size_one]
+        print(min(id0), max(id0))
