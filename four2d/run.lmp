@@ -13,7 +13,7 @@ variable          h         equal 2.7*${dx}
 variable          gx        equal 5.0
 variable          r0        equal 1.4*${dx}
 variable          kb        equal 1.3806488e-23
-variable          H         equal 200*${sdpd_temp}*${kb}/${r0}^2
+variable          H         equal 800*${sdpd_temp}*${kb}/${r0}^2
 
 
 region            box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
