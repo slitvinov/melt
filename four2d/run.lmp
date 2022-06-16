@@ -5,16 +5,15 @@ units             si
 atom_style        hybrid  bond sph
 boundary          p p p
 comm_modify       vel yes
-variable          sdpd_c    equal 0.8
+variable          sdpd_c    equal 1.0
 variable          sdpd_eta  equal 1.5e-5
 variable          sdpd_mu   equal ${sdpd_eta}/${sdpd_rho}
-variable          sdpd_temp equal 1e9
+variable          sdpd_temp    equal 2e10
 variable          h         equal 2.7*${dx}
-variable          gx        equal 5.0
-variable          r0        equal 1.4*${dx}
+variable          gx        equal 500
+variable          r0        equal 1.5*${dx}
 variable          kb        equal 1.3806488e-23
-variable          H         equal 800*${sdpd_temp}*${kb}/${r0}^2
-
+variable          H         equal 500*${sdpd_temp}*${kb}/${r0}^2
 
 region            box block 0.0 ${Lx}  0.0 ${Ly} 0.0 ${Lz} units box
 read_data         poly2d.txt
@@ -24,21 +23,14 @@ bond_style         fene
 bond_coeff         * ${H} ${r0}  0 0
 mass               * ${sdpd_mass}
 set                group all sph/rho ${sdpd_rho}
-pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 76787
-pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 fix                integrate_fix_full all sph
 fix                enforce2d all enforce2d
-
-dump               dump_bin all custom 5000 dump.*.bin id type x y vx vy
-dump_modify        dump_bin first yes
-dump_modify        dump_bin sort id
-dump_modify        dump_bin pad 8
 
 thermo_modify      norm no flush yes
 thermo             100
 variable           atomradius  equal ${dx}*0.25
-dump               imgDump all image 5000 image.*.ppm type type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
-dump_modify        imgDump pad 9
+dump               dump_img all image 100 image.*.ppm type type atom no bond atom ${atomradius} zoom 2.0 box yes 0.01 size 2048 2048
+dump_modify        dump_img pad 9
 
 variable           skin equal 0.001*$h
 neighbor           ${skin} bin
@@ -48,8 +40,11 @@ include            settimestep.lmp
 timestep           ${dt}
 
 variable           neq equal round(${teq}/${dt})
+pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 12345
+pair_coeff         * * ${sdpd_rho} ${sdpd_c} ${h}
 run  ${neq} every 1000 "velocity all zero linear" &
 "velocity all zero angular"
+pair_style         sdpd/taitwater/isothermal ${sdpd_temp} ${sdpd_mu} 12345
 
 variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
 variable bodyfy atom -mass*${gx}*cos(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
