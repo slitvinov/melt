@@ -7,4 +7,4 @@ awk -v Nbeads=10 -v Nsolvent=0 -v Npoly=full \
 nbond=$(tail -n 1 poly3.txt | awk '{print $1}')
 sed "s/_NUMBER_OF_BONDS_/$nbond/1" poly3.txt > poly3d.txt
 
-mpirun -np 4 lmp_mpi -var teq 0.0 < run.lmp
+mpirun -np 4 lmp_mpi -var teq 0.1 < run.lmp
