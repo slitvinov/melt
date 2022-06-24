@@ -36,5 +36,7 @@ with open(path, "rb") as file:
         a = array.array('d', buf)
         x = a[columns.index("x")::size_one]
         y = a[columns.index("y")::size_one]
+        if "z" in columns:
+            z = a[columns.index("z")::size_one]
         id0 = a[columns.index("id")::size_one]
-        print(min(id0), max(id0))
+        print("id:", min(id0), max(id0))

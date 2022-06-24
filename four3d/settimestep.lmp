@@ -1,9 +1,9 @@
-variable dt_eta equal ${dx}*${dx}/(${sdpd_mu})/16
-variable dt_c equal ${dx}/${sdpd_c}/8
+variable dt_eta equal ${dx}*${dx}/(${sdpd_mu})/8
+variable dt_c equal ${dx}/${sdpd_c}/16
+variable dt_g equal sqrt(${dx}/${gx})
 
-if "${dt_c}>${dt_eta}" then &
-"variable dt equal ${dt_eta}" &
-else &
-"variable dt equal ${dt_c}"
+variable dt equal ${dt_eta}
+if "${dt_c}<${dt}" then "variable dt equal ${dt_c}"
+if "${dt_g}<${dt}" then "variable dt equal ${dt_g}"
 
-print "(settimestep) ${dt_c} ${dt_eta} ${dt}"
+print "(settimestep) ${dt_c} ${dt_eta} ${dt_g} ${dt}"

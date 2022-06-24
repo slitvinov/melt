@@ -5,7 +5,7 @@ atom_style        hybrid  bond sph
 boundary          p p p
 comm_modify       vel yes
 include           vars.lmp
-variable          sdpd_c equal 9.5e-3
+variable          sdpd_c equal 1.0
 variable          sdpd_eta equal 1.5e-5
 variable          sdpd_mu  equal ${sdpd_eta}/${sdpd_rho}
 variable          sdpd_temp equal 1e5
@@ -30,6 +30,7 @@ fix                integrate_fix_full all sph
 
 dump               bin all custom 500 bin.*.bin id x y z vx vy vz
 dump_modify        bin first yes
+dump_modify        bin sort id
 dump_modify        bin pad 9
 
 variable           atomradius  equal ${dx}*0.25
@@ -54,4 +55,4 @@ variable bodyfx atom mass*${gx}*sin(2*PI*x/${Lx})*cos(2*PI*y/${Ly})
 variable bodyfy atom -mass*${gx}*cos(2*PI*x/${Lx})*sin(2*PI*y/${Ly})
 fix reverce_periodic all addforce v_bodyfx v_bodyfy 0
 
-run              100000000 every 1000 "velocity all zero linear"
+run                100000000 every 1000 "velocity all zero linear"
